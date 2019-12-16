@@ -1,6 +1,6 @@
 # Eat-Da-Burger App
 
-![App Image](/public/assets/images/app.png)
+![App Image](/assets/images/app.png)
 
 Eat-Da-Burger is burger logger app created with MySQL, Node, Express, Handlebars and a homemade ORM
 
