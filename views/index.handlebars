@@ -1,0 +1,88 @@
+<div class="row mt-4">
+    <div class="col-sm-12 d-flex justify-content-center">
+        <div class="card mb-4">
+            <div class="card-header bg-warning"><h5>Order burger here</h5></div>
+            <div class="card-body" id="cardBody">
+
+                <form class="addburger-form">
+                    <div class="form-group">
+                        <input class="form-control" id="burger_name" type="text">
+                    </div>
+                    <button class="btn btn-warning" type="submit" id="addburger">Order Burger</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper border border-light rounded p-3 mt-5">
+<h3>Your Burgers</h3>
+<hr>
+<div class="row">
+    {{#each burger}}
+    {{#unless this.devoured}}
+    <div class="col-sm-3 text-center my-3">
+        <h4 class="border border-light">{{this.burger_name}}</h4>
+    </div>
+    <div class="col-sm-2 text-left my-3">
+        <button class="change-status btn btn-warning" data-burger-id="{{id}}" data-devoured="{{devoured}}">
+            Eat Burger
+        </button>
+    </div>
+    {{/unless}}
+    {{/each}}
+</div>
+</div>
+
+<div class="wrapper border border-light rounded p-3 mt-5">
+    <h3>Burgers You've Eaten</h3>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            {{#each burger}}
+            {{#if this.devoured}}
+            <h4>{{this.burger_name}}</h4>
+            {{/if}}
+            {{/each}}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(".addburger-form").on("submit", function (event) {
+        
+        event.preventDefault();
+        if ($("#burger_name").val().trim() === "") {
+            alert("You have to enter a burger name!");
+            return;
+        }
+        var newBurger = {
+            burger_name: $("#burger_name").val().trim()
+        };
+       
+        $.ajax("/api/burgers", {
+            type: "POST",
+            data: newBurger
+        }).then(
+            function () {
+                
+                location.reload();
+            }
+        );
+    });
+    $(".change-status").on("click", function (event) {
+        var updateBurger = {
+            burgerId: $(this).data("burger-id")
+        };
+        
+        $.ajax("/api/burgers", {
+            type: "PUT",
+            data: updateBurger
+        }).then(
+            function () {
+                
+                location.reload();
+            }
+        );
+    });
+</script>
